@@ -3,20 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAITRI AI - Crew Assistant</title>
-    <link rel="stylesheet" href="style.css">
+    <title>MAITRI AI - Advanced Astronaut Assistant</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script> </head>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
 <body>
+    <canvas id="bg-canvas"></canvas>
 
     <div class="app-container">
-
+        <!-- ===== LOGIN PAGE ===== -->
         <div id="login-page" class="page active">
-            <div class="login-box">
+            <div class="login-box glass-pane">
                 <div class="logo">MAITRI AI 🚀</div>
-                <h2>Crew & Mission Control Portal</h2>
+                <h2>Advanced Astronaut Psychological Assistant</h2>
                 <form id="login-form">
                     <div class="input-group">
                         <label for="role-select">Select Your Role</label>
@@ -33,44 +35,156 @@
                         <label for="password">Password</label>
                         <input type="password" id="password" name="password" value="gagan2025" required>
                     </div>
-                    <button type="submit" class="btn-primary">Login</button>
+                    <button type="submit" class="btn btn-primary">Login to Mission</button>
                     <p id="login-error" class="error-message"></p>
                 </form>
             </div>
         </div>
 
-        <div id="home-page" class="page">
-            <header class="app-header">
-                <h1>Welcome, Vyomanaut</h1>
-                <button id="logout-btn" class="btn-secondary">Logout</button>
-            </header>
-            <div class="home-grid">
-                <div class="card main-action">
-                    <h3>Start New Session</h3>
-                    <p>Begin your scheduled psychological check-in.</p>
-                    <button id="start-session-btn" class="btn-primary btn-large">Start Now</button>
-                </div>
-                <div class="card">
-                    <h3>Upcoming Scheduled Sessions</h3>
-                    <div id="upcoming-sessions-list">
+        <!-- ===== CREW HOME - APP SHELL ===== -->
+        <div id="app-shell">
+            <aside class="sidebar glass-pane">
+                <div class="logo">MAITRI AI</div>
+                <nav>
+                    <ul>
+                        <li data-view="dashboard-view" class="active">
+                            <i class="fas fa-home"></i> Dashboard
+                        </li>
+                        <li data-view="upcoming-view">
+                            <i class="fas fa-calendar-alt"></i> Upcoming Sessions
+                        </li>
+                        <li data-view="history-view">
+                            <i class="fas fa-history"></i> Session History
+                        </li>
+                        <li data-view="resources-view">
+                            <i class="fas fa-book-medical"></i> Resources
+                        </li>
+                        <li data-view="profile-view">
+                            <i class="fas fa-user-astronaut"></i> Profile
+                        </li>
+                    </ul>
+                </nav>
+                <button id="logout-btn" class="btn btn-secondary">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </aside>
+            <main class="main-content">
+                <!-- Dashboard View -->
+                <div id="dashboard-view" class="home-view active">
+                    <div class="header">
+                        <h1>Welcome, Vyomanaut</h1>
+                        <p>Your mission psychological status dashboard</p>
+                    </div>
+                    
+                    <div class="shortcuts">
+                        <div class="shortcut-card glass-pane" id="shortcut-start-session">
+                            <i class="fas fa-play-circle"></i>
+                            <h3>Start New Session</h3>
+                            <p>Begin your scheduled psychological evaluation and check-in.</p>
                         </div>
+                        <div class="shortcut-card glass-pane" id="shortcut-view-report">
+                            <i class="fas fa-chart-line"></i>
+                            <h3>View Latest Report</h3>
+                            <p>Review the AI analysis from your most recent session.</p>
+                        </div>
+                         <div class="shortcut-card glass-pane" id="shortcut-check-schedule">
+                            <i class="fas fa-clock"></i>
+                            <h3>Check Schedule</h3>
+                            <p>See all upcoming evaluation appointments and countdowns.</p>
+                        </div>
+                        <div class="shortcut-card glass-pane" id="shortcut-resources">
+                            <i class="fas fa-heartbeat"></i>
+                            <h3>Wellness Resources</h3>
+                            <p>Access mental health resources and coping strategies.</p>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 3rem;">
+                        <h2>Recent Session History</h2>
+                        <ul id="past-sessions-list" class="session-list"></ul>
+                    </div>
                 </div>
-                <div class="card full-width">
-                    <h3>Past Session Info</h3>
-                    <ul id="past-sessions-list">
-                        </ul>
+                
+                <!-- Upcoming Sessions View -->
+                <div id="upcoming-view" class="home-view">
+                    <div class="header">
+                        <h1>Upcoming Sessions</h1>
+                        <p>Your scheduled psychological evaluation sessions</p>
+                    </div>
+                    <ul id="upcoming-sessions-list" class="session-list"></ul>
                 </div>
-            </div>
+                
+                <!-- Session History View -->
+                <div id="history-view" class="home-view">
+                    <div class="header">
+                        <h1>Session History</h1>
+                        <p>Complete record of your past evaluation sessions</p>
+                    </div>
+                    <ul id="past-sessions-full-list" class="session-list"></ul>
+                </div>
+                
+                <!-- Resources View -->
+                <div id="resources-view" class="home-view">
+                    <div class="header">
+                        <h1>Wellness Resources</h1>
+                        <p>Tools and information to support your mental health in space</p>
+                    </div>
+                    <div class="shortcuts">
+                        <div class="shortcut-card glass-pane">
+                            <i class="fas fa-head-side-virus"></i>
+                            <h3>Stress Management</h3>
+                            <p>Techniques and exercises to manage stress in isolated environments.</p>
+                        </div>
+                        <div class="shortcut-card glass-pane">
+                            <i class="fas fa-moon"></i>
+                            <h3>Sleep Optimization</h3>
+                            <p>Strategies for maintaining healthy sleep patterns in microgravity.</p>
+                        </div>
+                        <div class="shortcut-card glass-pane">
+                            <i class="fas fa-users"></i>
+                            <h3>Team Cohesion</h3>
+                            <p>Exercises and activities to strengthen crew relationships.</p>
+                        </div>
+                        <div class="shortcut-card glass-pane">
+                            <i class="fas fa-music"></i>
+                            <h3>Calming Sounds</h3>
+                            <p>Curated audio experiences to help you relax and focus.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Profile View -->
+                <div id="profile-view" class="home-view">
+                    <div class="header">
+                        <h1>Crew Profile</h1>
+                        <p>Your personal information and mission details</p>
+                    </div>
+                    <div class="card glass-pane">
+                        <h3>Personal Information</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;">
+                            <div>
+                                <p><strong>Name:</strong> Vyomanaut Sharma</p>
+                                <p><strong>Role:</strong> Mission Specialist</p>
+                                <p><strong>Mission:</strong> Gaganyaan 2025</p>
+                            </div>
+                            <div>
+                                <p><strong>Days in Mission:</strong> 127</p>
+                                <p><strong>Next Evaluation:</strong> 2 days</p>
+                                <p><strong>Overall Status:</strong> <span class="status-badge status-normal">Normal</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
         </div>
 
+        <!-- ===== SESSION PAGE ===== -->
         <div id="session-page" class="page">
             <div class="session-container">
                 <video id="camera-feed" autoplay playsinline></video>
-                <div class="session-content">
+                <div class="session-content glass-pane">
                     <h2>Read the following paragraph aloud</h2>
-                    <p id="reading-text">
-                        The expanse of space is a canvas of silent, shimmering stars. Here, aboard this vessel, we are pioneers charting a course through the cosmic ocean. Every system check, every observation, and every shared moment contributes to the legacy of human exploration. The hum of the life support system is a constant reminder of the delicate balance we maintain, a testament to the ingenuity that brought us here, so far from home yet closer than ever to understanding our place in the universe.
-                    </p>
+                    <p id="reading-text">The expanse of space is a canvas of silent, shimmering stars. Here, aboard this vessel, we are pioneers charting a course through the cosmic ocean. Every system check, every observation, and every shared moment contributes to the legacy of human exploration. The hum of the life support system is a constant reminder of the delicate balance we maintain, so far from home yet closer than ever to understanding our place in the universe. Our mission transcends national boundaries, representing humanity's collective aspiration to reach beyond our earthly confines.</p>
                     <div class="session-timer">
                         <p>Session ending in <span id="session-countdown">45</span>s</p>
                     </div>
@@ -78,27 +192,33 @@
             </div>
         </div>
 
+        <!-- ===== PSYCH EVALUATION PAGE ===== -->
         <div id="evaluation-page" class="page">
-             <header class="app-header">
+            <div class="app-header">
                 <h1>Psychological Evaluation</h1>
-            </header>
+                <p>Please answer these questions to help us understand your current state</p>
+            </div>
             <div class="evaluation-container">
-                <div id="question-container">
-                    </div>
+                <div class="progress-bar">
+                    <div class="progress" id="eval-progress" style="width: 25%;"></div>
+                </div>
+                <div id="question-container" class="glass-pane"></div>
                 <div class="navigation-buttons">
-                    <button id="back-btn" class="btn-secondary">Back</button>
-                    <button id="next-btn" class="btn-primary">Next</button>
-                    <button id="submit-eval-btn" class="btn-primary" style="display: none;">Submit Evaluation</button>
+                    <button id="back-btn" class="btn btn-secondary">Back</button>
+                    <button id="next-btn" class="btn btn-primary">Next</button>
+                    <button id="submit-eval-btn" class="btn btn-primary" style="display: none;">Submit Evaluation</button>
                 </div>
             </div>
         </div>
 
+        <!-- ===== REPORT PAGE ===== -->
         <div id="report-page" class="page">
-             <header class="app-header">
+            <div class="app-header">
                 <h1>Session Report</h1>
-            </header>
+                <p>Analysis of your psychological evaluation session</p>
+            </div>
             <div class="report-container">
-                <div class="card">
+                <div class="card glass-pane">
                     <h3>AI Analysis Summary</h3>
                     <div class="report-grid">
                         <div>
@@ -111,25 +231,27 @@
                         </div>
                     </div>
                 </div>
-                <div class="card">
+                <div class="card glass-pane">
                     <h3>Recommendations</h3>
                     <p id="report-recommendation"></p>
+                    <div id="mission-control-alert" class="mission-control-alert" style="display: none;">
+                        <p><i class="fas fa-exclamation-triangle"></i> <strong>Alert:</strong> This report has been automatically forwarded to Mission Control for review.</p>
+                    </div>
                 </div>
-
-                <div id="calming-music-section" class="card" style="display: none;">
-                    <h3>We've noticed you might be stressed.</h3>
-                    <p>Here are some calming sounds selected for you. Please take a moment to relax.</p>
+                <div id="calming-music-section" class="card glass-pane" style="display: none;">
+                    <h3><i class="fas fa-music"></i> Relaxation Assistance</h3>
+                    <p>We've detected signs of stress. Here are some calming sounds selected specifically for you. Please take a moment to relax and listen.</p>
                     <audio id="calming-audio" controls>
                         <source src="https://cdn.pixabay.com/audio/2022/11/17/audio_83fa7f0665.mp3" type="audio/mpeg">
                         Your browser does not support the audio element.
                     </audio>
                 </div>
-                
-                <button id="finish-btn" class="btn-primary">Finish & Return Home</button>
+                <button id="finish-btn" class="btn btn-primary btn-large">Finish & Return to Dashboard</button>
             </div>
         </div>
+    </div>
 
-    </div> <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="script.js"></script>
 </body>
-                  </html>
-                  
+    </html>
