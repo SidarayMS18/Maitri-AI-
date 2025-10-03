@@ -24,25 +24,34 @@
                         <label for="role-select">Select Your Role</label>
                         <select id="role-select" name="role">
                             <option value="crew">Crew Member</option>
-                            <option value="control" disabled>Mission Control Official</option>
+                            <option value="control">Mission Control Official</option>
                         </select>
                     </div>
                     <div class="input-group">
                         <label for="username">Username</label>
-                        <input type="text" id="username" name="username" value="vyomanaut" required>
+                        <input type="text" id="username" name="username" placeholder="Enter username" required>
                     </div>
                     <div class="input-group">
                         <label for="password">Password</label>
-                        <input type="password" id="password" name="password" value="gagan2025" required>
+                        <input type="password" id="password" name="password" placeholder="Enter password" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Login to Mission</button>
                     <p id="login-error" class="error-message"></p>
+                    
+                    <!-- Demo credentials -->
+                    <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(59, 130, 246, 0.1); border-radius: 8px;">
+                        <p style="font-size: 0.9rem; color: var(--text-secondary); margin: 0;">
+                            <strong>Demo Credentials:</strong><br>
+                            Username: <code>vyomanaut</code><br>
+                            Password: <code>gagan2025</code>
+                        </p>
+                    </div>
                 </form>
             </div>
         </div>
 
         <!-- ===== CREW HOME - APP SHELL ===== -->
-        <div id="app-shell">
+        <div id="app-shell" class="page">
             <aside class="sidebar glass-pane">
                 <div class="logo">MAITRI AI</div>
                 <nav>
@@ -254,4 +263,4 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="script.js"></script>
 </body>
-    </html>
+</html>
